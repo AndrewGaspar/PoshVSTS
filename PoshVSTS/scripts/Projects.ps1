@@ -25,7 +25,7 @@ function Get-VstsProject {
                 stateFilter = $StateFilter
             }
             
-            GetAllPagedValues $Instance "projects" "1.0" $Parameters $ChunkSize 
+            GetAllPagedValues $Instance "_apis/projects" "1.0" $Parameters $ChunkSize 
         }
         Instance {
             $Parameters = @{}
@@ -33,7 +33,7 @@ function Get-VstsProject {
                 $Parameters["includeCapabilities"] = "true"
             }
             
-            Invoke-VstsGetOperation $Instance "projects/$Id" "1.0" $Parameters
+            Invoke-VstsGetOperation $Instance "_apis/projects/$Id" "1.0" $Parameters
         }
     }
 }
@@ -65,7 +65,7 @@ function Set-VstsProject {
         $body["description"] = $Description
     }
     
-    Invoke-VstsOperation $Instance "projects/$Id" "2.0-preview" Patch -Body $body
+    Invoke-VstsOperation $Instance "_apis/projects/$Id" "2.0-preview" Patch -Body $body
 }
 
 function Rename-VstsProject {
@@ -98,7 +98,7 @@ function New-VstsProject {
         [string]$TemplateTypeId
     )
     
-    Invoke-VstsOperation $Instance "projects" "2.0-preview" Post -Body (@{
+    Invoke-VstsOperation $Instance "_apis/projects" "2.0-preview" Post -Body (@{
         name = $Name
         description = $Description
         capabilities = @{
@@ -122,5 +122,5 @@ function Remove-VstsProject {
         [string]$Id
     )
     
-    Invoke-VstsOperation $Instance "projects/$Id" "1.0" Delete
+    Invoke-VstsOperation $Instance "_apis/projects/$Id" "1.0" Delete
 }

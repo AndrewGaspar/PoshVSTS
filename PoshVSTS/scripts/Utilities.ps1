@@ -6,7 +6,7 @@ function BuildUrl {
         [hashtable]$Parameters
     )
     
-    $url = "https://$Instance/defaultcollection/_apis/$Path"
+    $url = "https://$Instance/defaultcollection/$Path"
     if($Parameters.Count -gt 0) {
         $url += "?"
         $url += ($Parameters.Keys | % { "$_=$($Parameters[$_])" }) -join "&"
