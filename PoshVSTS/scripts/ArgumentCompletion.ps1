@@ -8,8 +8,8 @@ Register-ArgumentCompleter `
             $commandAst,
             $fakeBoundParameters)
             
-        Get-ChildItem "~\AppData\Roaming\PoshVSTS\Instances" "$wordToComplete*" | % {
-            $_.Name
+        Get-VstsCredentials "$wordToComplete*" | % {
+            $_.Instance
         }
     }
 

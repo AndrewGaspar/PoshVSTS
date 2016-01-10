@@ -20,19 +20,25 @@ function RedeemCredentials {
     Param([string]$Instance)
     
     $credentialsPath = "~\AppData\Roaming\PoshVSTS\Instances\$Instance\credentials.json"
-    if($null -eq (Get-Item -EA SilentlyContinue $credentialsPath)) {
-        return $null
+    if(!(Get-Item -EA SilentlyContinue $credentialsPath)) {
+        return
     }
     
     $json = Get-Content $credentialsPath | ConvertFrom-Json
     
     $json.Password = ConvertTo-SecureString $json.Password
     
+    $json | Add-Member -NotePropertyName Instance -NotePropertyValue $Instance
+    
     $json
 }
 
-function Clear-VstsCredentials {
-    Param([string]$Instance)
+function Remove-VstsCredentials {
+    Param(
+        [Parameter(
+            ValueFromPipeline=$True,
+            ValueFromPipelineByPropertyName=$True)]
+        [string]$Instance)
     
     $credentialsPath = "~\AppData\Roaming\PoshVSTS\Instances\$Instance\credentials.json"
     
@@ -41,19 +47,9 @@ function Clear-VstsCredentials {
 
 
 function Get-VstsCredentials {
-    Param([string]$Instance)
+    Param([string]$Instance = "*")
     
-    $storedCredentials = RedeemCredentials $Instance
-    
-    if($storedCredentials) {
-        $storedCredentials
-    } else {
-        $credentials = Get-Credential
-        
-        StoreCredentials $Instance $credentials
-        
-        $credentials
-    }
+    ls "~\AppData\Roaming\PoshVSTS\Instances" $Instance | % { RedeemCredentials $_.Name }
 }
 
 function Set-VstsCredentials {

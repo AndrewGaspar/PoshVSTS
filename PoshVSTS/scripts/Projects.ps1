@@ -72,7 +72,7 @@ function Rename-VstsProject {
     Param(
         [Parameter(Mandatory=$True)]
         [string]$Instance,
-        [Parameter(Mandatory=$True, 
+        [Parameter(Mandatory=$True,
             ValueFromPipeline=$True,
             ValueFromPipelineByPropertyName=$True)]
         [string]$Id,
