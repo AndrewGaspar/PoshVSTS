@@ -301,7 +301,24 @@ function CompleteVstsProjectId {
     }
 }
 
+function CompleteVstsInstance {
+    param($commandName,
+        $parameterName,
+        $wordToComplete,
+        $commandAst,
+        $fakeBoundParameters)
+        
+    Get-ChildItem "~\AppData\Roaming\PoshVSTS\Instances" "$wordToComplete*" | % {
+        $_.Name
+    }
+}
+
 Register-ArgumentCompleter `
     -CommandName @(Get-Command "*-VstsProject") `
     -ParameterName Id `
     -ScriptBlock $function:CompleteVstsProjectId
+
+Register-ArgumentCompleter `
+    -CommandName @(Get-Command "*-Vsts*") `
+    -ParameterName Instance `
+    -ScriptBlock $function:CompleteVstsInstance
