@@ -25,6 +25,9 @@ function RedeemCredentials {
     }
     
     $json = Get-Content $credentialsPath | ConvertFrom-Json
+    if(!$json) {
+        return
+    }
     
     $json.Password = ConvertTo-SecureString $json.Password
     
@@ -55,7 +58,7 @@ function Get-VstsCredentials {
 function Set-VstsCredentials {
     Param(
         [string]$Instance,
-        [pscredential]$Credentials)
+        [pscredential]$Credentials = (Get-Credential))
     
     StoreCredentials $Instance $Credentials
 }

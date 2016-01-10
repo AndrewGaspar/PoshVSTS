@@ -37,6 +37,11 @@ function DecryptSecureString {
 function GetAuth([string]$Instance) {
     $credentials = Get-VstsCredentials $Instance
     
+    if($null -eq $credentials) {
+        Write-Error -Message "No default credentials available for $Instance. Call Set-Credentials to set the credentials."
+        return
+    }
+    
     "Basic $([System.Convert]::ToBase64String(
         [System.Text.Encoding]::UTF8.GetBytes(
             "$($credentials.UserName):$(DecryptSecureString $credentials.Password)")))"
@@ -55,19 +60,20 @@ function InvokeOperation {
     $Parameters['api-version'] = $ApiVersion
     
     $url = BuildUrl $Instance $Path $Parameters
+    $auth = GetAuth $Instance -EA Stop
     
     if($Method -eq "Get") {
         Invoke-RestMethod `
             -Uri $url `
             -Method $Method `
-            -Headers @{ Authorization = GetAuth $Instance }
+            -Headers @{ Authorization = $auth }
     } else {
         Invoke-RestMethod `
             -Uri $url `
             -Method $Method `
             -Body ($Body | ConvertTo-Json -Depth 10 -Compress) `
             -ContentType "application/json" `
-            -Headers @{ Authorization = GetAuth $Instance }
+            -Headers @{ Authorization = $auth }
     }
 }
     
