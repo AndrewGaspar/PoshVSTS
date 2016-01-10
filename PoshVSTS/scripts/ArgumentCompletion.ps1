@@ -12,18 +12,26 @@ Register-ArgumentCompleter `
             $_.Instance
         }
     }
+    
+function CompleteProjectId {
+    param($commandName,
+        $parameterName,
+        $wordToComplete,
+        $commandAst,
+        $fakeBoundParameters)
+        
+    if($fakeBoundParameters.Instance) {
+        Get-VstsProject $fakeBoundParameters.Instance | % { $_.id } | ? { $_ -like "$wordToComplete*" }
+    }
+}
 
 Register-ArgumentCompleter `
     -CommandName @(Get-Command "*-VstsProject") `
     -ParameterName Id `
-    -ScriptBlock {
-        param($commandName,
-            $parameterName,
-            $wordToComplete,
-            $commandAst,
-            $fakeBoundParameters)
-            
-        if($fakeBoundParameters.Instance) {
-            Get-VstsProject $fakeBoundParameters.Instance | % { $_.id } | ? { $_ -like "$wordToComplete*" }
-        }
-    }
+    -ScriptBlock $function:CompleteProjectId
+    
+Register-ArgumentCompleter `
+    -CommandName @(Get-Command "*-Vsts*") `
+    -ParameterName ProjectId `
+    -ScriptBlock $function:CompleteProjectId
+    
