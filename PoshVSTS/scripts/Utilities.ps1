@@ -47,7 +47,7 @@ function GetAuth([string]$Instance) {
             "$($credentials.UserName):$(DecryptSecureString $credentials.Password)")))"
 }
 
-function InvokeOperation {
+function Invoke-VstsOperation {
     Param(
         [string]$Instance,
         [string]$Path,
@@ -77,7 +77,7 @@ function InvokeOperation {
     }
 }
     
-function InvokeGetOperation {
+function Invoke-VstsGetOperation {
     Param(
         [string]$Instance,
         [string]$Path,
@@ -85,7 +85,7 @@ function InvokeGetOperation {
         [hashtable]$Parameters = @{}
     )
     
-    InvokeOperation $Instance $Path $ApiVersion Get $Parameters
+    Invoke-VstsOperation $Instance $Path $ApiVersion Get $Parameters
 }
 
 function GetAllPagedValues {
@@ -105,7 +105,7 @@ function GetAllPagedValues {
     {
         $Parameters['`$skip'] = $skip
         
-        $results = InvokeGetOperation $Instance $Path $ApiVersion $Parameters
+        $results = Invoke-VstsGetOperation $Instance $Path $ApiVersion $Parameters
         
         $skip += $results.count;
         

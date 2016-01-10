@@ -33,7 +33,7 @@ function Get-VstsProject {
                 $Parameters["includeCapabilities"] = "true"
             }
             
-            InvokeGetOperation $Instance "projects/$Id" "1.0" $Parameters
+            Invoke-VstsGetOperation $Instance "projects/$Id" "1.0" $Parameters
         }
     }
 }
@@ -65,7 +65,7 @@ function Set-VstsProject {
         $body["description"] = $Description
     }
     
-    InvokeOperation $Instance "projects/$Id" "2.0-preview" Patch -Body $body
+    Invoke-VstsOperation $Instance "projects/$Id" "2.0-preview" Patch -Body $body
 }
 
 function Rename-VstsProject {
@@ -98,7 +98,7 @@ function New-VstsProject {
         [string]$TemplateTypeId
     )
     
-    InvokeOperation $Instance "projects" "2.0-preview" Post -Body (@{
+    Invoke-VstsOperation $Instance "projects" "2.0-preview" Post -Body (@{
         name = $Name
         description = $Description
         capabilities = @{
@@ -122,5 +122,5 @@ function Remove-VstsProject {
         [string]$Id
     )
     
-    InvokeOperation $Instance "projects/$Id" "1.0" Delete
+    Invoke-VstsOperation $Instance "projects/$Id" "1.0" Delete
 }
