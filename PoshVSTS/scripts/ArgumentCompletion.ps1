@@ -25,14 +25,6 @@ function CompleteProjectId {
     }
 }
 
-function GetFakeProject($fakeBoundParameters) {
-    if($fakeBoundParameters.ProjectId) {
-        return $fakeBoundParameters.ProjectId
-    } elseif($fakeBoundParameters.ProjectName) {
-        return $fakeBoundParameters.ProjectName
-    }
-}
-
 function CompleteTeamName {
     param($commandName,
         $parameterName,
