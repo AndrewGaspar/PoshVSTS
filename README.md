@@ -1,2 +1,2 @@
-# PoshVSO
-A PowerShell module for inteacting with Visual Studio Online
+# PoshVSTS
+A PowerShell module for interacting with Visual Studio Team Services
