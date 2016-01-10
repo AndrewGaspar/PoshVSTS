@@ -94,16 +94,16 @@ function GetAllPagedValues {
         [string]$Path,
         [string]$ApiVersion,
         [hashtable]$Parameters = @{},
-        [int]$ChunkSize = 10
+        [int]$ChunkSize = 100
     )
     
     $skip = 0
     
-    $Parameters['`$top'] = $ChunkSize
+    $Parameters['$top'] = $ChunkSize
     
     do
     {
-        $Parameters['`$skip'] = $skip
+        $Parameters['$skip'] = $skip
         
         $results = Invoke-VstsGetOperation $Instance $Path $ApiVersion $Parameters
         
