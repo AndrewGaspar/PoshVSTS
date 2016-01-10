@@ -90,8 +90,8 @@ function GetVstsCredentials {
     }
 }
 
-function GetAuth {
-    $credentials = GetVstsCredentials
+function GetAuth([string]$Instance) {
+    $credentials = GetVstsCredentials $Instance
     
     "Basic $([System.Convert]::ToBase64String(
         [System.Text.Encoding]::UTF8.GetBytes(
@@ -116,14 +116,14 @@ function InvokeOperation {
         Invoke-RestMethod `
             -Uri $url `
             -Method $Method `
-            -Headers @{ Authorization = GetAuth }
+            -Headers @{ Authorization = GetAuth $Instance }
     } else {
         Invoke-RestMethod `
             -Uri $url `
             -Method $Method `
             -Body ($Body | ConvertTo-Json -Depth 10 -Compress) `
             -ContentType "application/json" `
-            -Headers @{ Authorization = GetAuth }
+            -Headers @{ Authorization = GetAuth $Instance }
     }
 }
     
