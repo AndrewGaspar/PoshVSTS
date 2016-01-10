@@ -25,7 +25,7 @@ function CompleteProjectId {
     }
 }
 
-function CompleteTeamName {
+function CompleteProjectName {
     param($commandName,
         $parameterName,
         $wordToComplete,
@@ -33,13 +33,23 @@ function CompleteTeamName {
         $fakeBoundParameters)
         
     if($fakeBoundParameters.Instance) {
-        & {
-            if($fakeBoundParameters.ProjectName) {
-                Get-VstsProjectTeam $fakeBoundParameters.Instance $fakeBoundParameters.ProjectName -ChunkSize 1000
-            } elseif($fakeBoundParameters.ProjectId) {
-                Get-VstsProjectTeam $fakeBoundParameters.Instance $fakeBoundParameters.ProjectId -ChunkSize 1000
-            }
-        } | % { $_.name } |
+        Get-VstsProject $fakeBoundParameters.Instance | % { $_.name } | ? { $_ -like "$wordToComplete*" }
+    }
+}
+
+function CompleteTeamName {
+    param($commandName,
+        $parameterName,
+        $wordToComplete,
+        $commandAst,
+        $fakeBoundParameters)
+        
+    if($fakeBoundParameters.Instance -and $fakeBoundParameters.Project) {
+        Get-VstsProjectTeam `
+         -Instance $fakeBoundParameters.Instance `
+         -Project $fakeBoundParameters.Project `
+         -ChunkSize 1000 |
+            % { $_.name } |
             ? { $_ -like "$wordToComplete*" } |
             % { if($_.Contains(" ")) { "`"$_`"" } else { $_ } }
     }
@@ -52,8 +62,8 @@ Register-ArgumentCompleter `
     
 Register-ArgumentCompleter `
     -CommandName @(Get-Command "*-Vsts*") `
-    -ParameterName ProjectId `
-    -ScriptBlock $function:CompleteProjectId
+    -ParameterName Project `
+    -ScriptBlock $function:CompleteProjectName
     
 Register-ArgumentCompleter `
     -CommandName @(Get-Command "*-VstsProjectTeam") `
