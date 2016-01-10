@@ -168,7 +168,11 @@ function Get-VstsProject {
     Param(
         [Parameter(Position=0, Mandatory=$True)]
         [string]$Instance,
-        [Parameter(Position=1, ParameterSetName="Instance")]
+        [Parameter(Mandatory=$True, 
+            Position=1,
+            ParameterSetName="Instance",
+            ValueFromPipeline=$True,
+            ValueFromPipelineByPropertyName=$True)]
         [string]$Id,
         [Parameter(ParameterSetName="Instance")]
         [switch]$IncludeCapabilities,
@@ -204,7 +208,10 @@ function Set-VstsProject {
         [string]$Description,
         [Parameter(Mandatory=$True, Position=0)]
         [string]$Instance,
-        [Parameter(Mandatory=$True, Position=1)]
+        [Parameter(Mandatory=$True,
+            Position = 1,
+            ValueFromPipeline=$True,
+            ValueFromPipelineByPropertyName=$True)]
         [string]$Id
     )
     
@@ -229,7 +236,9 @@ function Rename-VstsProject {
     Param(
         [Parameter(Mandatory=$True)]
         [string]$Instance,
-        [Parameter(Mandatory=$True)]
+        [Parameter(Mandatory=$True, 
+            ValueFromPipeline=$True,
+            ValueFromPipelineByPropertyName=$True)]
         [string]$Id,
         [Parameter(Mandatory=$True)]
         [string]$Name
@@ -271,7 +280,9 @@ function Remove-VstsProject {
     Param(
         [Parameter(Mandatory=$True)]
         [string]$Instance,
-        [Parameter(Mandatory=$True)]
+        [Parameter(Mandatory=$True, 
+            ValueFromPipeline=$True,
+            ValueFromPipelineByPropertyName=$True)]
         [string]$Id
     )
     
