@@ -1,5 +1,5 @@
 function Get-VstsProjectTeam {
-    [CmdletBinding(DefaultParameterSetName="All")]
+    [CmdletBinding(DefaultParameterSetName="Name")]
     Param(
         [Parameter(Mandatory=$True, Position=0)]
         [string]$Instance,
@@ -10,28 +10,23 @@ function Get-VstsProjectTeam {
         [Alias("ProjectId")]
         [string]$Project,
         [Parameter(
-            Mandatory=$True, 
             Position=2,
             ParameterSetName="Name")]
-        [string]$Name,
+        [string]$Name = "*",
         [Parameter(
-            Mandatory=$True, 
             Position=2,
             ParameterSetName="Id")]
         [guid]$Id,
         [int]$ChunkSize = 100
     )
     
-    $team = "$null"
+    $team = "*"
     switch($PSCmdlet.ParameterSetName) {
         Id {
-            $team = $id
+            $team = $Id
         }
         Name {
-            $team = $name
-        }
-        All {
-            $team = "*"
+            $team = $Name
         }
     }
     
@@ -45,4 +40,32 @@ function Get-VstsProjectTeam {
             -ChunkSize $ChunkSize |
             ? { $_.Name -like $team }
     }
+}
+
+function Get-VstsProjectTeamMember {
+    [CmdletBinding(DefaultParameterSetName="Name")]
+    Param(
+        [Parameter(Mandatory=$True, Position=0)]
+        [string]$Instance,
+        [Parameter(
+            Mandatory=$True, 
+            Position=1)]
+        [Alias("ProjectName")]
+        [Alias("ProjectId")]
+        [string]$Project,
+        [Parameter(
+            Mandatory=$True, 
+            Position=2,
+            ParameterSetName="Name")]
+        [Alias("TeamName")]
+        [Alias("TeamId")]
+        [string]$Team,
+        [int]$ChunkSize = 100
+    )
+    
+    GetAllPagedValues `
+        -Instance $Instance `
+        -Path "_apis/projects/$Project/teams/$Team/members" `
+        -ApiVersion "1.0" `
+        -ChunkSize $ChunkSize
 }

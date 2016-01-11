@@ -46,11 +46,12 @@ function CompleteTeamName {
         
     if($fakeBoundParameters.Instance -and $fakeBoundParameters.Project) {
         Get-VstsProjectTeam `
-         -Instance $fakeBoundParameters.Instance `
-         -Project $fakeBoundParameters.Project `
-         -ChunkSize 1000 |
+        -Instance $fakeBoundParameters.Instance `
+        -Project $fakeBoundParameters.Project `
+        -ChunkSize 1000 |
             % { $_.name } |
             ? { $_ -like "$wordToComplete*" } |
+            sort |
             % { if($_.Contains(" ")) { "`"$_`"" } else { $_ } }
     }
 }
@@ -68,5 +69,10 @@ Register-ArgumentCompleter `
 Register-ArgumentCompleter `
     -CommandName @(Get-Command "*-VstsProjectTeam") `
     -ParameterName Name `
+    -ScriptBlock $function:CompleteTeamName
+    
+Register-ArgumentCompleter `
+    -CommandName @(Get-Command "*-Vsts*") `
+    -ParameterName Team `
     -ScriptBlock $function:CompleteTeamName
     
