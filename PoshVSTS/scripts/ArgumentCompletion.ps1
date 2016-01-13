@@ -56,6 +56,20 @@ function CompleteTeamName {
     }
 }
 
+function CompleteArea {
+    param($commandName,
+        $parameterName,
+        $wordToComplete,
+        $commandAst,
+        $fakeBoundParameters)
+        
+    if($fakeBoundParameters.Instance) {
+        Get-VstsArea `
+            -Instance $fakeBoundParameters.Instance `
+            -Area "$wordToComplete*" | % { $_.area }
+    }
+}
+
 Register-ArgumentCompleter `
     -CommandName @(Get-Command "*-VstsProject") `
     -ParameterName Id `
@@ -76,3 +90,7 @@ Register-ArgumentCompleter `
     -ParameterName Team `
     -ScriptBlock $function:CompleteTeamName
     
+Register-ArgumentCompleter `
+    -CommandName @("Get-VstsOption", "Get-VstsArea") `
+    -ParameterName Area `
+    -ScriptBlock $function:CompleteArea
