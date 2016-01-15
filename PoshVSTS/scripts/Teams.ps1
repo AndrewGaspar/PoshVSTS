@@ -33,7 +33,7 @@ function Get-VstsProjectTeam {
     if(!$team.Contains("*")) {
         Invoke-VstsGetOperation $Instance "_apis/projects/$Project/teams/$team" "2.0-preview"
     } else {
-        GetAllPagedValues `
+        Invoke-VstsGetAllOperation `
             -Instance $Instance `
             -Path "_apis/projects/$Project/teams" `
             -ApiVersion "2.0-preview" `
@@ -63,7 +63,7 @@ function Get-VstsProjectTeamMember {
         [int]$ChunkSize = 100
     )
     
-    GetAllPagedValues `
+    Invoke-VstsGetAllOperation `
         -Instance $Instance `
         -Path "_apis/projects/$Project/teams/$Team/members" `
         -ApiVersion "1.0" `

@@ -88,7 +88,7 @@ function Invoke-VstsGetOperation {
     Invoke-VstsOperation $Instance $Path $ApiVersion Get $Parameters
 }
 
-function GetAllPagedValues {
+function Invoke-VstsGetAllOperation {
     Param(
         [string]$Instance,
         [string]$Path,

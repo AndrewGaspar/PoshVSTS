@@ -25,7 +25,7 @@ function Get-VstsProject {
                 stateFilter = $StateFilter
             }
             
-            GetAllPagedValues $Instance "_apis/projects" "1.0" $Parameters $ChunkSize 
+            Invoke-VstsGetAllOperation $Instance "_apis/projects" "1.0" $Parameters $ChunkSize 
         }
         Instance {
             $Parameters = @{}
