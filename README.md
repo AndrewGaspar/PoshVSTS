@@ -3,7 +3,23 @@ A PowerShell module for interacting with Visual Studio Team Services
 
 ## Credential Store
 
-[Todo]
+Add credentials for a VSTS instance using Set-VstsCredentials. This will set the default
+credentials for the VSTS instance. You should be able to user your default user name and
+password, but you pay need to generate an application token if your VSTS instance disallows
+Basic authentication.
+
+```powershell
+GIT F:\Projects\PoshVSO [master ≡]> Set-VstsCredentials andrewgaspar.visualstudio.com andrew.gaspar@outlook.com
+
+
+    Directory: C:\Users\Andrew\AppData\Roaming\PoshVSTS\Instances
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        1/18/2016  11:21 PM                andrewgaspar.visualstudio.com
+
+```
 
 ## Projects
 
